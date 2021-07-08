@@ -33,9 +33,9 @@ namespace decryptNamespace {
       System.Security.Cryptography.TripleDESCryptoServiceProvider provDES3
         = new System.Security.Cryptography.TripleDESCryptoServiceProvider();
         provDES3.Key = System.Text.UTF8Encoding.UTF8.GetBytes(strKey.Substring(0,24));
-        provDES3.Mode = CipherMode.CBC;
+        provDES3.Mode = System.Security.Cryptography.CipherMode.CBC;
         provDES3.IV = hex2bytes("0000000000000000"); // this is important !!
-        provDES3.Padding = PaddingMode.PKCS7; // this is OK
+        provDES3.Padding = System.Security.Cryptography.PaddingMode.PKCS7; // this is OK
 
       System.Security.Cryptography.ICryptoTransform decryptor = provDES3.CreateDecryptor();
       byte[] arrResult = decryptor.TransformFinalBlock(arrData, 0, arrData.Length);

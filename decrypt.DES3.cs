@@ -26,7 +26,7 @@ namespace decryptNamespace {
       return arrBytes; 
     }
 
-    public static string decrypt(string strData, string strKey) {
+    public static string decryptDES3(string strData, string strKey) {
       string strDecrypt = strData;
       byte[] arrData = hex2bytes(strData);
       

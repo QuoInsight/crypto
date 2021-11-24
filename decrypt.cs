@@ -45,5 +45,35 @@ namespace decryptNamespace {
       return strDecrypt;
     }
 
+    ////////////////////////////////////////////////////////////////////
+
+    public static System.Security.Cryptography.AesCryptoServiceProvider getAes256Provider(string privateKey) {
+      /*
+        DBMS_CRYPTO.ENCRYPT_AES256 + DBMS_CRYPTO.CHAIN_CBC + DBMS_CRYPTO.PAD_PKCS5
+        [ https://stackoverflow.com/questions/33420630/replicate-oracle-aes-256-encryption-to-c-sharp ]
+      */
+      System.Security.Cryptography.AesCryptoServiceProvider aes
+        = new System.Security.Cryptography.AesCryptoServiceProvider();
+        aes.BlockSize = 128;
+        aes.KeySize = 256;  // = 8-bits x 32-bytes
+        aes.Key = System.Text.Encoding.GetEncoding(1252).GetBytes(privateKey);  // 32 bytes privateKeyBytes
+        aes.IV = new byte[] {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};  // 16 bytes sharedIVKeyBytes Initialization Vector: Default is all zeroes in DBMS_CRYPTO !!
+        aes.Mode = CipherMode.CBC;  // Cipher Block Chaining
+        aes.Padding = PaddingMode.PKCS7;  // Same as PKCS5/7. Provides padding which complies with the PKCS#5: Password-Based Cryptography Standard.
+      return aes;
+    }
+
+    public static string decryptAes256(byte[] encrypted, string strKey) {
+      string strDecrypt = "";
+      using (var aes = getAes256Provider(strKey)) {
+        using (System.Security.Cryptography.ICryptoTransform decryptor = aes.CreateDecryptor(aes.Key, aes.IV)) {
+          byte[] decrypted = decryptor.TransformFinalBlock(encrypted, 0, encrypted.Length);
+          strDecrypt = System.Text.Encoding.UTF8.GetString(decrypted);
+          decryptor.Dispose();
+        }
+      }
+      return strDecrypt;
+    }
+
   } // public class decryptClass;
 }

@@ -11,6 +11,14 @@ namespace IdeaCipher
    *  true to encrypt, false to decrypt.
    * ## modified by CKL036
 
+      byte[] HexStringToByteArray(string hexString) {
+        byte[] byteArr = new byte[(int)(hexString.Length/2)];
+        for (int i=0; i<byteArr.Length; i++) {
+          byteArr[i] = (byte)Convert.ToInt32(hexString.Substring(i*2,2), 16);
+        }
+        return byteArr;
+      }
+
       string ByteArrayToHexString(byte[] ba) {
         System.Text.StringBuilder hex = new System.Text.StringBuilder(ba.Length * 2);
         foreach (byte b in ba) hex.AppendFormat("{0:x2}", b);
@@ -18,11 +26,13 @@ namespace IdeaCipher
       }
 
       bool encrypt = true; // true to encrypt, false to decrypt.
-      //string charKey = "??";
-      byte[] charKey = new byte[] {
-        0x01, 0x23, 0x45, 0x67, 0x89, 0xAB, 0xCD, 0xEF,
-        0x01, 0x23, 0x45, 0x67, 0x89, 0xAB, 0xCD, 0xEF
-      };
+      //string charKey = "0123456789ABCDEF0123456789ABCDEF";
+      //byte[] charKey = new byte[] {
+      //  0x01, 0x23, 0x45, 0x67, 0x89, 0xAB, 0xCD, 0xEF,
+      //  0x01, 0x23, 0x45, 0x67, 0x89, 0xAB, 0xCD, 0xEF
+      //};
+      byte[] charKey = HexStringToByteArray("0123456789ABCDEF0123456789ABCDEF");
+
       string strData = "abc123  "; // block of 8 data bytes
       byte[] data = Encoding.ASCII.GetBytes(strData);
 

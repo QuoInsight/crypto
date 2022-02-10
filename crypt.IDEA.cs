@@ -10,7 +10,35 @@ namespace IdeaCipher
    * @param encrypt
    *  true to encrypt, false to decrypt.
    * ## modified by CKL036
-   */
+
+      string ByteArrayToHexString(byte[] ba) {
+        System.Text.StringBuilder hex = new System.Text.StringBuilder(ba.Length * 2);
+        foreach (byte b in ba) hex.AppendFormat("{0:x2}", b);
+        return hex.ToString();
+      }
+
+      bool encrypt = true; // true to encrypt, false to decrypt.
+      //string charKey = "??";
+      byte[] charKey = new byte[] {
+        0x01, 0x23, 0x45, 0x67, 0x89, 0xAB, 0xCD, 0xEF,
+        0x01, 0x23, 0x45, 0x67, 0x89, 0xAB, 0xCD, 0xEF
+      };
+      string strData = "abc123  "; // block of 8 data bytes
+      byte[] data = Encoding.ASCII.GetBytes(strData);
+
+      IdeaCipher.IDEA idea = new IdeaCipher.IDEA(charKey, encrypt);
+      idea.crypt(data, 0);
+      Response.Write( ByteArrayToHexString(data) + "<br>" );
+
+  //Response.End();
+
+      encrypt = false;
+      idea = new IdeaCipher.IDEA(charKey, encrypt);
+      idea.crypt(data, 0);
+      strData = Encoding.ASCII.GetString(data, 0, data.Length);
+      Response.Write("[" + strData + "]<br>");
+
+*/
   public class IDEA
   {
     // Number of rounds.

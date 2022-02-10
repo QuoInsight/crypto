@@ -11,7 +11,7 @@ namespace IdeaCipher
    *  true to encrypt, false to decrypt.
    * ## modified by CKL036
 
-      byte[] HexStringToByteArray(string hexString) {
+      byte[] HexStr2ByteArr(string hexString) {
         byte[] byteArr = new byte[(int)(hexString.Length/2)];
         for (int i=0; i<byteArr.Length; i++) {
           byteArr[i] = (byte)System.Convert.ToInt32(hexString.Substring(i*2,2), 16);
@@ -19,7 +19,7 @@ namespace IdeaCipher
         return byteArr;
       }
 
-      string ByteArrayToHexString(byte[] ba) {
+      string ByteArr2HexStr(byte[] ba) {
         System.Text.StringBuilder hex = new System.Text.StringBuilder(ba.Length * 2);
         foreach (byte b in ba) hex.AppendFormat("{0:x2}", b);
         return hex.ToString();
@@ -31,21 +31,21 @@ namespace IdeaCipher
       //  0x01, 0x23, 0x45, 0x67, 0x89, 0xAB, 0xCD, 0xEF,
       //  0x01, 0x23, 0x45, 0x67, 0x89, 0xAB, 0xCD, 0xEF
       //};
-      byte[] charKey = HexStringToByteArray("0123456789ABCDEF0123456789ABCDEF");
+      byte[] charKey = HexStr2ByteArr("0123456789ABCDEF0123456789ABCDEF");
 
       string strData = "abc123  "; // block of 8 data bytes
-      byte[] data = Encoding.ASCII.GetBytes(strData);
+      byte[] data = System.Text.Encoding.ASCII.GetBytes(strData);
 
       IdeaCipher.IDEA idea = new IdeaCipher.IDEA(charKey, encrypt);
       idea.crypt(data, 0);
-      Response.Write( ByteArrayToHexString(data) + "<br>" );
+      Response.Write( ByteArr2HexStr(data) + "<br>" );
 
   //Response.End();
 
       encrypt = false;
       idea = new IdeaCipher.IDEA(charKey, encrypt);
       idea.crypt(data, 0);
-      strData = Encoding.ASCII.GetString(data, 0, data.Length);
+      strData = System.Text.Encoding.ASCII.GetString(data, 0, data.Length);
       Response.Write("[" + strData + "]<br>");
 
 */

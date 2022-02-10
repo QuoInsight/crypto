@@ -14,7 +14,7 @@ namespace IdeaCipher
       byte[] HexStringToByteArray(string hexString) {
         byte[] byteArr = new byte[(int)(hexString.Length/2)];
         for (int i=0; i<byteArr.Length; i++) {
-          byteArr[i] = (byte)Convert.ToInt32(hexString.Substring(i*2,2), 16);
+          byteArr[i] = (byte)System.Convert.ToInt32(hexString.Substring(i*2,2), 16);
         }
         return byteArr;
       }
